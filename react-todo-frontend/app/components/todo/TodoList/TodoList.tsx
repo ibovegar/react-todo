@@ -1,11 +1,4 @@
-import {
-	BodyLong,
-	HGrid,
-	HStack,
-	LinkCard,
-	Tag,
-	VStack,
-} from "@navikt/ds-react";
+import { BodyLong, HStack, LinkCard, Tag, VStack } from "@navikt/ds-react";
 import { useRef, useState } from "react";
 import type { Todo, TodoTag } from "~/api";
 import { CreateTodoCard } from "../CreateTodoCard";
@@ -34,44 +27,49 @@ export const TodoList = (props: TodoListProps) => {
 
 	return (
 		<VStack gap="space-20">
-			<HGrid gap="space-4" columns={{ xs: 1, sm: 2, lg: 3 }} align="start">
-				{showCreate && <CreateTodoCard availableTags={availableTags} />}
+			<div className={styles.masonry}>
+				{showCreate && (
+					<div className={styles.masonryItem}>
+						<CreateTodoCard availableTags={availableTags} />
+					</div>
+				)}
 				{todos.map((todo) => (
-					<LinkCard
-						key={todo.id}
-						className={styles.card}
-						onClick={(e) => handleCardClick(e, todo.id)}
-					>
-						<VStack gap="space-12">
-							<LinkCard.Title>
-								<LinkCard.Anchor href="#">{todo.title}</LinkCard.Anchor>
-							</LinkCard.Title>
-							<HStack gap="space-2" wrap>
-								{todo.tags.map((tag) => (
-									<Tag
-										key={tag.name}
-										variant="moderate"
-										size="small"
-										data-color={tag.color}
-									>
-										{tag.name}
-									</Tag>
-								))}
-							</HStack>
-							<BodyLong
-								style={{
-									display: "-webkit-box",
-									WebkitLineClamp: 4,
-									WebkitBoxOrient: "vertical",
-									overflow: "hidden",
-								}}
-							>
-								{todo.description}
-							</BodyLong>
-						</VStack>
-					</LinkCard>
+					<div key={todo.id} className={styles.masonryItem}>
+						<LinkCard
+							className={styles.card}
+							onClick={(e) => handleCardClick(e, todo.id)}
+						>
+							<VStack gap="space-12">
+								<LinkCard.Title>
+									<LinkCard.Anchor href="#">{todo.title}</LinkCard.Anchor>
+								</LinkCard.Title>
+								<HStack gap="space-2" wrap>
+									{todo.tags.map((tag) => (
+										<Tag
+											key={tag.name}
+											variant="moderate"
+											size="small"
+											data-color={tag.color}
+										>
+											{tag.name}
+										</Tag>
+									))}
+								</HStack>
+								<BodyLong
+									style={{
+										display: "-webkit-box",
+										WebkitLineClamp: 4,
+										WebkitBoxOrient: "vertical",
+										overflow: "hidden",
+									}}
+								>
+									{todo.description}
+								</BodyLong>
+							</VStack>
+						</LinkCard>
+					</div>
 				))}
-			</HGrid>
+			</div>
 			{selectedTodo && originElementRef.current && (
 				<TodoDetailDialog
 					todo={selectedTodo}

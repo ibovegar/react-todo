@@ -21,6 +21,11 @@ const TabsLayout = () => {
 						align="end"
 						style={{
 							borderBottom: "1px solid var(--ax-border-neutral-subtle)",
+							position: "sticky",
+							top: 0,
+							zIndex: 10,
+							background: "var(--ax-bg-default)",
+							paddingTop: "var(--ax-space-12)",
 						}}
 					>
 						<HStack gap="space-8">

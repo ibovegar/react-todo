@@ -26,7 +26,7 @@ export const CreateTodoCard = (props: CreateTodoCardProps) => {
 				borderWidth="1"
 				borderColor="neutral-subtle"
 				background="default"
-				style={{ cursor: "pointer", height: "100%", minHeight: "180px" }}
+				style={{ cursor: "pointer", width: "100%", minHeight: "180px" }}
 			>
 				<VStack
 					gap="space-4"
