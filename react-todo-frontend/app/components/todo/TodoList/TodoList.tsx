@@ -1,6 +1,5 @@
 import {
 	BodyLong,
-	Heading,
 	HGrid,
 	HStack,
 	LinkCard,
@@ -43,9 +42,10 @@ export const TodoList = (props: TodoListProps) => {
 						className={styles.card}
 						onClick={(e) => handleCardClick(e, todo.id)}
 					>
-						<LinkCard.Anchor href="#">{todo.title}</LinkCard.Anchor>
 						<VStack gap="space-12">
-							<Heading size="small">{todo.title}</Heading>
+							<LinkCard.Title>
+								<LinkCard.Anchor href="#">{todo.title}</LinkCard.Anchor>
+							</LinkCard.Title>
 							<HStack gap="space-2" wrap>
 								{todo.tags.map((tag) => (
 									<Tag
