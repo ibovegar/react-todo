@@ -1,5 +1,6 @@
 import { BodyLong, HStack, LinkCard, Tag, VStack } from "@navikt/ds-react";
 import { useRef, useState } from "react";
+import Masonry from "react-masonry-css";
 import type { Todo, TodoTag } from "~/api";
 import { CreateTodoCard } from "../CreateTodoCard";
 import { TodoDetailDialog } from "../TodoDetailDialog";
@@ -27,49 +28,48 @@ export const TodoList = (props: TodoListProps) => {
 
 	return (
 		<VStack gap="space-20">
-			<div className={styles.masonry}>
-				{showCreate && (
-					<div className={styles.masonryItem}>
-						<CreateTodoCard availableTags={availableTags} />
-					</div>
-				)}
+			<Masonry
+				breakpointCols={{ default: 3, 1024: 2, 480: 1 }}
+				className={styles.masonry}
+				columnClassName={styles.masonryColumn}
+			>
+				{showCreate && <CreateTodoCard availableTags={availableTags} />}
 				{todos.map((todo) => (
-					<div key={todo.id} className={styles.masonryItem}>
-						<LinkCard
-							className={styles.card}
-							onClick={(e) => handleCardClick(e, todo.id)}
-						>
-							<VStack gap="space-12">
-								<LinkCard.Title>
-									<LinkCard.Anchor href="#">{todo.title}</LinkCard.Anchor>
-								</LinkCard.Title>
-								<HStack gap="space-2" wrap>
-									{todo.tags.map((tag) => (
-										<Tag
-											key={tag.name}
-											variant="moderate"
-											size="small"
-											data-color={tag.color}
-										>
-											{tag.name}
-										</Tag>
-									))}
-								</HStack>
-								<BodyLong
-									style={{
-										display: "-webkit-box",
-										WebkitLineClamp: 4,
-										WebkitBoxOrient: "vertical",
-										overflow: "hidden",
-									}}
-								>
-									{todo.description}
-								</BodyLong>
-							</VStack>
-						</LinkCard>
-					</div>
+					<LinkCard
+						key={todo.id}
+						className={styles.card}
+						onClick={(e) => handleCardClick(e, todo.id)}
+					>
+						<VStack gap="space-12">
+							<LinkCard.Title>
+								<LinkCard.Anchor href="#">{todo.title}</LinkCard.Anchor>
+							</LinkCard.Title>
+							<HStack gap="space-2" wrap>
+								{todo.tags.map((tag) => (
+									<Tag
+										key={tag.name}
+										variant="moderate"
+										size="small"
+										data-color={tag.color}
+									>
+										{tag.name}
+									</Tag>
+								))}
+							</HStack>
+							<BodyLong
+								style={{
+									display: "-webkit-box",
+									WebkitLineClamp: 4,
+									WebkitBoxOrient: "vertical",
+									overflow: "hidden",
+								}}
+							>
+								{todo.description}
+							</BodyLong>
+						</VStack>
+					</LinkCard>
 				))}
-			</div>
+			</Masonry>
 			{selectedTodo && originElementRef.current && (
 				<TodoDetailDialog
 					todo={selectedTodo}
