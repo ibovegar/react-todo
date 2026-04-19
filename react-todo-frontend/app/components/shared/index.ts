@@ -1,3 +1,4 @@
-export { ExpandModal } from './ExpandModal'
-export { PageHeader } from './PageHeader'
-export { SidebarLink } from './SidebarLink'
+export { ExpandModal } from "./ExpandModal";
+export { NavItem } from "./NavItem";
+export { PageHeader } from "./PageHeader";
+export { SidebarLink } from "./SidebarLink";

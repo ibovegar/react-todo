@@ -1,30 +1,33 @@
-import { useLoaderData } from 'react-router'
-
-import type { TodoTag } from '~/api'
-import { addTagToTodo, getFinishedTodos, getTags, markTodoOpen } from '~/api'
-import { TodoList } from '~/components'
+import { VStack } from "@navikt/ds-react";
+import { useLoaderData } from "react-router";
+import { getFinishedTodos, getTags } from "~/api";
+import { PageHeader, TagFilter, TodoList } from "~/components";
+import { useTagFilter } from "~/hooks/use-tag-filter";
 
 export async function loader() {
-  const [todos, tags] = await Promise.all([getFinishedTodos(), getTags()])
-  return { todos, tags }
+	const [todos, tags] = await Promise.all([getFinishedTodos(), getTags()]);
+	return { todos, tags };
 }
 
-export async function action({ request }: { request: Request }) {
-  const formData = await request.formData()
-  const intent = formData.get('intent') as string
-  const id = formData.get('id') as string
+const Finished = () => {
+	const { todos, tags } = useLoaderData<typeof loader>();
+	const { allTags, activeFilters, filteredTodos, toggleFilter } =
+		useTagFilter(todos);
+	return (
+		<VStack gap="space-20">
+			<PageHeader
+				title="Finished Todos"
+				actions={
+					<TagFilter
+						tags={allTags}
+						activeFilters={activeFilters}
+						onToggle={toggleFilter}
+					/>
+				}
+			/>
+			<TodoList todos={filteredTodos} availableTags={tags} />
+		</VStack>
+	);
+};
 
-  if (intent === 'addTag') {
-    const tags = JSON.parse(formData.get('tags') as string) as TodoTag[]
-    await addTagToTodo(id, tags)
-    return { ok: true }
-  }
-
-  await markTodoOpen(id)
-  return { ok: true }
-}
-
-export default function Finished() {
-  const { todos, tags } = useLoaderData<typeof loader>()
-  return <TodoList title="Finished Todos" todos={todos} availableTags={tags} />
-}
+export default Finished;

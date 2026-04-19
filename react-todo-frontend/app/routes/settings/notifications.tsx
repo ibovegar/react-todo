@@ -1,3 +1,5 @@
-export default function Notifications() {
-  return null
-}
+const Notifications = () => {
+	return null;
+};
+
+export default Notifications;

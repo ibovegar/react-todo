@@ -1,3 +1,5 @@
-export default function Profile() {
-  return null
-}
+const Profile = () => {
+	return null;
+};
+
+export default Profile;

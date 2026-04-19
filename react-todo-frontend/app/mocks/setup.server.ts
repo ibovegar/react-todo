@@ -1,4 +1,7 @@
-import { server } from './node'
+import { server } from "./node";
 
-server.listen({ onUnhandledRequest: 'bypass' })
-console.log('🔶 MSW server started')
+if (!globalThis.__mswStarted) {
+	server.listen({ onUnhandledRequest: "bypass" });
+	globalThis.__mswStarted = true;
+	console.log("🔶 MSW server started");
+}

@@ -1,27 +1,27 @@
-import { CheckmarkIcon } from '@navikt/aksel-icons'
-import { Tag } from '@navikt/ds-react'
+import { CheckmarkIcon } from "@navikt/aksel-icons";
+import { Tag } from "@navikt/ds-react";
 
-import type { TodoTag } from '~/api'
+import type { TodoTag } from "~/api";
 
 interface SelectableTagProps {
-  tag: TodoTag
-  selected: boolean
-  onClick: () => void
+	tag: TodoTag;
+	selected: boolean;
+	onClick: () => void;
 }
 
-export function SelectableTag(props: SelectableTagProps) {
-  const { tag, selected, onClick } = props
+export const SelectableTag = (props: SelectableTagProps) => {
+	const { tag, selected, onClick } = props;
 
-  return (
-    <Tag
-      variant={selected ? 'strong' : 'moderate'}
-      size="small"
-      data-color={tag.color}
-      style={{ cursor: 'pointer' }}
-      onClick={onClick}
-    >
-      {selected && <CheckmarkIcon aria-hidden />}
-      {tag.name}
-    </Tag>
-  )
-}
+	return (
+		<Tag
+			variant={selected ? "strong" : "moderate"}
+			size="small"
+			data-color={tag.color}
+			style={{ cursor: "pointer" }}
+			onClick={onClick}
+		>
+			{selected && <CheckmarkIcon aria-hidden />}
+			{tag.name}
+		</Tag>
+	);
+};

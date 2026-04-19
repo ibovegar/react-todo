@@ -1,12 +1,13 @@
-export type { TagColor, Todo, TodoTag } from './todos'
+export type { TagColor, Todo, TodoTag } from "./todos";
 export {
-  addTagToTodo,
-  createTag,
-  createTodo,
-  deleteTag,
-  getFinishedTodos,
-  getOpenTodos,
-  getTags,
-  markTodoDone,
-  markTodoOpen,
-} from './todos'
+	addTagToTodo,
+	createTag,
+	createTodo,
+	deleteTag,
+	deleteTodo,
+	getFinishedTodos,
+	getOpenTodos,
+	getTags,
+	markTodoDone,
+	markTodoOpen,
+} from "./todos";
