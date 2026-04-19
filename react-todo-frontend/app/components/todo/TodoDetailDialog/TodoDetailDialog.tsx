@@ -1,5 +1,5 @@
 import { HStack, Textarea, TextField, VStack } from "@navikt/ds-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Todo, TodoTag } from "~/api";
 import { useAutoSave } from "~/hooks/use-auto-save";
 import { useCardExpandAnimation } from "~/hooks/use-card-expand-animation";
@@ -27,6 +27,8 @@ export const TodoDetailDialog = (props: TodoDetailDialogProps) => {
 	const [description, setDescription] = useState(todo?.description ?? "");
 	const [localTags, setLocalTags] = useState<TodoTag[]>(todo?.tags ?? []);
 	const [showTagEditor, setShowTagEditor] = useState(false);
+	const [shaking, setShaking] = useState(false);
+	const titleRef = useRef<HTMLInputElement>(null);
 	const tags = todo?.tags ?? localTags;
 	const unusedTags = getUnusedTags(availableTags, tags);
 
@@ -90,6 +92,16 @@ export const TodoDetailDialog = (props: TodoDetailDialogProps) => {
 		}
 	}
 
+	function handleCreate() {
+		if (!title.trim()) {
+			setShaking(true);
+			titleRef.current?.focus();
+			setTimeout(() => setShaking(false), 400);
+			return;
+		}
+		actions.create(title, description, localTags);
+	}
+
 	if (!animation.isOpen) return null;
 
 	return (
@@ -102,12 +114,13 @@ export const TodoDetailDialog = (props: TodoDetailDialogProps) => {
 		>
 			<VStack gap="space-12">
 				<TextField
+					ref={titleRef}
 					label="Title"
 					size="small"
 					hideLabel
 					value={title}
 					onChange={(e) => setTitle(e.target.value)}
-					className={`${styles.borderlessInput} ${styles.title}`}
+					className={`${styles.borderlessInput} ${styles.title} ${shaking ? styles.shake : ""}`}
 					placeholder="Title"
 					autoFocus={isCreateMode}
 				/>
@@ -146,7 +159,7 @@ export const TodoDetailDialog = (props: TodoDetailDialogProps) => {
 					onDelete={actions.remove}
 					onToggleDone={actions.toggleDone}
 					onToggleTags={() => setShowTagEditor((v) => !v)}
-					onCreate={() => actions.create(title, description, localTags)}
+					onCreate={handleCreate}
 					onClose={animation.close}
 				/>
 			</VStack>
