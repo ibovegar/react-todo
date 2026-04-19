@@ -5,6 +5,7 @@ import {
 	deleteTodo,
 	markTodoDone,
 	markTodoOpen,
+	updateTodo,
 } from "~/api";
 
 export async function action({ request }: { request: Request }) {
@@ -17,6 +18,13 @@ export async function action({ request }: { request: Request }) {
 		const description = formData.get("description") as string;
 		const tags = JSON.parse(formData.get("tags") as string) as TodoTag[];
 		await createTodo({ title, description, tags });
+		return { ok: true };
+	}
+
+	if (intent === "update") {
+		const title = formData.get("title") as string;
+		const description = formData.get("description") as string;
+		await updateTodo(id, { title, description });
 		return { ok: true };
 	}
 

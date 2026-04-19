@@ -1,0 +1,24 @@
+.borderlessInput input,
+.borderlessInput textarea {
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	padding-inline: 0;
+}
+
+.borderlessInput input:focus,
+.borderlessInput textarea:focus {
+	box-shadow: none;
+	outline: none;
+	border: none;
+}
+
+.title input {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.borderlessInput textarea {
+	font-size: 1.125rem;
+	line-height: 1.5;
+}

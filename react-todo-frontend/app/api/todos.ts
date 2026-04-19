@@ -74,6 +74,18 @@ export async function deleteTodo(id: string): Promise<void> {
 	await fetch(`${API_BASE}/todos/${id}`, { method: "DELETE" });
 }
 
+export async function updateTodo(
+	id: string,
+	fields: { title?: string; description?: string },
+): Promise<Todo> {
+	const res = await fetch(`${API_BASE}/todos/${id}`, {
+		method: "PATCH",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(fields),
+	});
+	return res.json();
+}
+
 export async function deleteTag(name: string): Promise<void> {
 	await fetch(`${API_BASE}/tags/${encodeURIComponent(name)}`, {
 		method: "DELETE",

@@ -10,4 +10,5 @@ export {
 	getTags,
 	markTodoDone,
 	markTodoOpen,
+	updateTodo,
 } from "./todos";

@@ -38,6 +38,7 @@ export const ExpandModal = (props: ExpandModalProps) => {
 				className={`${styles.panel} ${isClosing ? styles.closing : ""}`}
 				onAnimationEnd={onAnimationEnd}
 				padding="space-12"
+				paddingInline="space-20"
 				borderRadius="8"
 				background="default"
 				style={animationStyle}
