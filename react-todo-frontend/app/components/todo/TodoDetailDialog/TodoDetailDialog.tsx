@@ -1,9 +1,9 @@
 import { HStack, Textarea, TextField, VStack } from "@navikt/ds-react";
 import { useEffect, useRef, useState } from "react";
-import type { Todo, TodoTag } from "~/api";
 import { useAutoSave } from "~/hooks/use-auto-save";
 import { useCardExpandAnimation } from "~/hooks/use-card-expand-animation";
 import { useTodoActions } from "~/hooks/use-todo-actions";
+import type { Todo, TodoTag } from "~/models";
 import { getUnusedTags } from "~/utils";
 import { ExpandModal } from "../../shared/ExpandModal";
 import { RemovableTag } from "../../tag/RemovableTag";
@@ -74,7 +74,7 @@ export const TodoDetailDialog = (props: TodoDetailDialogProps) => {
 	]);
 
 	function handleAddTag(tag: TodoTag) {
-		if (tags.some((t) => t.name === tag.name)) return;
+		if (tags.some((t) => t.id === tag.id)) return;
 		const newTags = [...tags, tag];
 		if (todo) {
 			actions.setTags(newTags);
@@ -83,8 +83,8 @@ export const TodoDetailDialog = (props: TodoDetailDialogProps) => {
 		}
 	}
 
-	function handleRemoveTag(tagName: string) {
-		const newTags = tags.filter((t) => t.name !== tagName);
+	function handleRemoveTag(tagId: string) {
+		const newTags = tags.filter((t) => t.id !== tagId);
 		if (todo) {
 			actions.setTags(newTags);
 		} else {
@@ -137,11 +137,7 @@ export const TodoDetailDialog = (props: TodoDetailDialogProps) => {
 				{tags.length > 0 && (
 					<HStack gap="space-2" wrap>
 						{tags.map((tag) => (
-							<RemovableTag
-								key={tag.name}
-								tag={tag}
-								onRemove={handleRemoveTag}
-							/>
+							<RemovableTag key={tag.id} tag={tag} onRemove={handleRemoveTag} />
 						))}
 					</HStack>
 				)}

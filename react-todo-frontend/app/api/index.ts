@@ -1,4 +1,3 @@
-export type { TagColor, Todo, TodoTag } from "./todos";
 export {
 	addTagToTodo,
 	createTag,

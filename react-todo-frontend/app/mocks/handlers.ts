@@ -1,5 +1,5 @@
 import { HttpResponse, http } from "msw";
-import type { Todo, TodoTag } from "~/api";
+import type { Todo, TodoTag } from "~/models";
 import { tags, todos } from "./data";
 
 export const handlers = [
@@ -54,8 +54,8 @@ export const handlers = [
 			if (todo.tags) {
 				const seen = new Set<string>();
 				todo.tags = todo.tags.filter((t) => {
-					if (seen.has(t.name)) return false;
-					seen.add(t.name);
+					if (seen.has(t.id)) return false;
+					seen.add(t.id);
 					return true;
 				});
 			}
@@ -68,15 +68,20 @@ export const handlers = [
 	}),
 
 	http.post("http://localhost:3001/api/tags", async ({ request }) => {
-		const body = (await request.clone().json()) as TodoTag;
+		const body = (await request.clone().json()) as Omit<TodoTag, "id">;
 		if (tags.some((t) => t.name === body.name)) {
 			return HttpResponse.json(
 				{ error: "Tag already exists" },
 				{ status: 409 },
 			);
 		}
-		tags.push(body);
-		return HttpResponse.json(body, { status: 201 });
+		const maxId = tags.reduce(
+			(max, t) => Math.max(max, Number(t.id.replace("tag-", ""))),
+			0,
+		);
+		const newTag: TodoTag = { id: `tag-${maxId + 1}`, ...body };
+		tags.push(newTag);
+		return HttpResponse.json(newTag, { status: 201 });
 	}),
 
 	http.delete("http://localhost:3001/api/todos/:id", ({ params }) => {
@@ -89,15 +94,15 @@ export const handlers = [
 		return HttpResponse.json(null, { status: 204 });
 	}),
 
-	http.delete("http://localhost:3001/api/tags/:name", ({ params }) => {
-		const name = params.name as string;
-		const index = tags.findIndex((t) => t.name === name);
+	http.delete("http://localhost:3001/api/tags/:id", ({ params }) => {
+		const id = params.id as string;
+		const index = tags.findIndex((t) => t.id === id);
 		if (index === -1) {
 			return HttpResponse.json({ error: "Tag not found" }, { status: 404 });
 		}
 		tags.splice(index, 1);
 		for (const todo of todos) {
-			todo.tags = todo.tags.filter((t) => t.name !== name);
+			todo.tags = todo.tags.filter((t) => t.id !== id);
 		}
 		return HttpResponse.json(null, { status: 204 });
 	}),

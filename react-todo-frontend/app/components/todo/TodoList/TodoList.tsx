@@ -1,7 +1,8 @@
 import { BodyLong, HStack, LinkCard, Tag, VStack } from "@navikt/ds-react";
 import { useRef, useState } from "react";
 import Masonry from "react-masonry-css";
-import type { Todo, TodoTag } from "~/api";
+import type { Todo, TodoTag } from "~/models";
+import { toAkselColor } from "~/utils";
 import { CreateTodoCard } from "../CreateTodoCard";
 import { TodoDetailDialog } from "../TodoDetailDialog";
 import styles from "./TodoList.module.css";
@@ -47,10 +48,10 @@ export const TodoList = (props: TodoListProps) => {
 							<HStack gap="space-2" wrap>
 								{todo.tags.map((tag) => (
 									<Tag
-										key={tag.name}
+										key={tag.id}
 										variant="moderate"
 										size="small"
-										data-color={tag.color}
+										data-color={toAkselColor(tag.color)}
 									>
 										{tag.name}
 									</Tag>

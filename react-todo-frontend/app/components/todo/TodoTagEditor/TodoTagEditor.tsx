@@ -1,6 +1,6 @@
 import { HStack } from "@navikt/ds-react";
 import { useMemo } from "react";
-import type { TodoTag } from "~/api";
+import type { TodoTag } from "~/models";
 import { getUnusedTags } from "~/utils";
 import { RemovableTag } from "../../tag/RemovableTag";
 import { TagPicker } from "../../tag/TagPicker";

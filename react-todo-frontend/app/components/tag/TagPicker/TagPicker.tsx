@@ -1,7 +1,7 @@
 import { PlusIcon } from "@navikt/aksel-icons";
 import { Button, Popover } from "@navikt/ds-react";
 import { useRef, useState } from "react";
-import type { TodoTag } from "~/api";
+import type { TodoTag } from "~/models";
 import { TagCloud } from "../TagCloud";
 
 interface TagPickerProps {

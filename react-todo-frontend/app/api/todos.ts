@@ -1,6 +1,3 @@
-export type { TagColor, TodoTag } from "~/models/tag";
-export type { Todo } from "~/models/todo";
-
 import type { TodoTag } from "~/models/tag";
 import type { Todo } from "~/models/todo";
 
@@ -61,7 +58,7 @@ export async function getTags(): Promise<TodoTag[]> {
 	return res.json();
 }
 
-export async function createTag(tag: TodoTag): Promise<TodoTag> {
+export async function createTag(tag: Omit<TodoTag, "id">): Promise<TodoTag> {
 	const res = await fetch(`${API_BASE}/tags`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -86,8 +83,8 @@ export async function updateTodo(
 	return res.json();
 }
 
-export async function deleteTag(name: string): Promise<void> {
-	await fetch(`${API_BASE}/tags/${encodeURIComponent(name)}`, {
+export async function deleteTag(id: string): Promise<void> {
+	await fetch(`${API_BASE}/tags/${encodeURIComponent(id)}`, {
 		method: "DELETE",
 	});
 }

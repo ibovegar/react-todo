@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useFetcher } from "react-router";
-import type { Todo, TodoTag } from "~/api";
+import type { Todo, TodoTag } from "~/models";
 
 const ACTION = "/api/todos";
 

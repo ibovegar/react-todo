@@ -1,5 +1,5 @@
 import { Button, HStack } from "@navikt/ds-react";
-import type { TodoTag } from "~/api";
+import type { TodoTag } from "~/models";
 import { SelectableTag } from "../SelectableTag";
 
 interface TagCloudProps {
@@ -11,13 +11,13 @@ interface TagCloudProps {
 export const TagCloud = (props: TagCloudProps) => {
 	const { tags, disabledTags, onSelect } = props;
 	const isDisabled = (tag: TodoTag) =>
-		disabledTags?.some((d) => d.name === tag.name) ?? false;
+		disabledTags?.some((d) => d.id === tag.id) ?? false;
 
 	return (
 		<HStack gap="space-4" wrap>
 			{tags.map((tag) => (
 				<Button
-					key={tag.name}
+					key={tag.id}
 					type="button"
 					variant="tertiary-neutral"
 					size="small"

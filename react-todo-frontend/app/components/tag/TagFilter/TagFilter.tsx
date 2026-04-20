@@ -1,12 +1,12 @@
 import { Button, HStack } from "@navikt/ds-react";
 import { useState } from "react";
-import type { TodoTag } from "~/api";
+import type { TodoTag } from "~/models";
 import { SelectableTag } from "../SelectableTag";
 
 interface TagFilterProps {
 	tags: TodoTag[];
 	activeFilters: string[];
-	onToggle: (tagName: string) => void;
+	onToggle: (tagId: string) => void;
 }
 
 export const TagFilter = (props: TagFilterProps) => {
@@ -19,10 +19,10 @@ export const TagFilter = (props: TagFilterProps) => {
 		<HStack gap="space-2" wrap align="center">
 			{visibleTags.map((tag) => (
 				<SelectableTag
-					key={tag.name}
+					key={tag.id}
 					tag={tag}
-					selected={activeFilters.includes(tag.name)}
-					onClick={() => onToggle(tag.name)}
+					selected={activeFilters.includes(tag.id)}
+					onClick={() => onToggle(tag.id)}
 				/>
 			))}
 			{!showAll && tags.length > 5 && (

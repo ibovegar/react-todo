@@ -9,13 +9,9 @@ import {
 } from "@navikt/ds-react";
 import { Form, useLoaderData } from "react-router";
 
-import {
-	createTag,
-	deleteTag,
-	getTags,
-	type TagColor,
-	type TodoTag,
-} from "~/api";
+import { createTag, deleteTag, getTags } from "~/api";
+import type { TagColor, TodoTag } from "~/models";
+import { toAkselColor } from "~/utils";
 
 export async function loader() {
 	const tags = await getTags();
@@ -35,25 +31,25 @@ export async function action({ request }: { request: Request }) {
 	}
 
 	if (intent === "delete") {
-		const name = formData.get("name") as string;
-		await deleteTag(name);
+		const id = formData.get("id") as string;
+		await deleteTag(id);
 	}
 
 	return { ok: true };
 }
 
 const colorOptions: { value: TagColor; label: string }[] = [
-	{ value: "neutral", label: "Neutral" },
-	{ value: "accent", label: "Accent" },
-	{ value: "info", label: "Info" },
-	{ value: "success", label: "Success" },
-	{ value: "warning", label: "Warning" },
-	{ value: "danger", label: "Danger" },
-	{ value: "brand-magenta", label: "Magenta" },
-	{ value: "brand-beige", label: "Beige" },
-	{ value: "brand-blue", label: "Blue" },
-	{ value: "meta-purple", label: "Purple" },
-	{ value: "meta-lime", label: "Lime" },
+	{ value: "color_1", label: "Neutral" },
+	{ value: "color_2", label: "Accent" },
+	{ value: "color_3", label: "Info" },
+	{ value: "color_4", label: "Success" },
+	{ value: "color_5", label: "Warning" },
+	{ value: "color_6", label: "Danger" },
+	{ value: "color_7", label: "Magenta" },
+	{ value: "color_8", label: "Beige" },
+	{ value: "color_9", label: "Blue" },
+	{ value: "color_10", label: "Purple" },
+	{ value: "color_11", label: "Lime" },
 ];
 
 const TagsSettings = () => {
@@ -80,10 +76,10 @@ const TagsSettings = () => {
 
 			<HStack gap="space-4" wrap>
 				{tags.map((tag: TodoTag) => (
-					<Form key={tag.name} method="post">
+					<Form key={tag.id} method="post">
 						<input type="hidden" name="intent" value="delete" />
-						<input type="hidden" name="name" value={tag.name} />
-						<Tag variant="moderate" data-color={tag.color}>
+						<input type="hidden" name="id" value={tag.id} />
+						<Tag variant="moderate" data-color={toAkselColor(tag.color)}>
 							{tag.name}
 							<button
 								type="submit"

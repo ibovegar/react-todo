@@ -1,4 +1,3 @@
-import type { TodoTag } from "~/api";
 import {
 	addTagToTodo,
 	createTodo,
@@ -7,6 +6,7 @@ import {
 	markTodoOpen,
 	updateTodo,
 } from "~/api";
+import type { TodoTag } from "~/models";
 
 export async function action({ request }: { request: Request }) {
 	const formData = await request.formData();
