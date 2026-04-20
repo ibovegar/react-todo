@@ -1,13 +1,2 @@
-export {
-  addTagToTodo,
-  createTag,
-  createTodo,
-  deleteTag,
-  deleteTodo,
-  getFinishedTodos,
-  getOpenTodos,
-  getTags,
-  markTodoDone,
-  markTodoOpen,
-  updateTodo,
-} from './todos'
+export { createTagApi } from './tag-api'
+export { createTodoAction, createTodoApi } from './todo-api'

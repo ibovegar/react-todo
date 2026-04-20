@@ -2,16 +2,18 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { Button, HStack, Select, Tag, TextField, VStack } from '@navikt/ds-react'
 import { Form, useLoaderData } from 'react-router'
 
-import { createTag as createTagApi, deleteTag as deleteTagApi, getTags } from '~/api'
+import { createTagApi } from '~/api'
 import type { TagColor, TodoTag } from '~/models'
 import { toAkselColor } from '~/utils'
 
-export async function loader() {
-  const tags = await getTags()
+export async function loader({ request }: { request: Request }) {
+  const tagApi = createTagApi({ request })
+  const tags = await tagApi.getAll()
   return { tags }
 }
 
 export async function action({ request }: { request: Request }) {
+  const tagApi = createTagApi({ request })
   const formData = await request.formData()
   const intent = formData.get('intent')
 
@@ -19,13 +21,13 @@ export async function action({ request }: { request: Request }) {
     const name = formData.get('name') as string
     const color = formData.get('color') as TagColor
     if (name?.trim()) {
-      await createTagApi({ name: name.trim().toLowerCase(), color })
+      await tagApi.create({ name: name.trim().toLowerCase(), color })
     }
   }
 
   if (intent === 'delete') {
     const id = formData.get('id') as string
-    await deleteTagApi(id)
+    await tagApi.delete(id)
   }
 
   return { ok: true }
