@@ -1,52 +1,52 @@
 .borderlessInput input,
 .borderlessInput textarea {
-	border: none;
-	box-shadow: none;
-	background: transparent;
-	padding-inline: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding-inline: 0;
 }
 
 .borderlessInput input:focus,
 .borderlessInput textarea:focus {
-	box-shadow: none;
-	outline: none;
-	border: none;
+  box-shadow: none;
+  outline: none;
+  border: none;
 }
 
 .title input {
-	font-size: 1.5rem;
-	font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .shake input {
-	animation: shake 0.4s ease;
-	color: #f00;
+  animation: shake 0.4s ease;
+  color: #f00;
 }
 
 .shake input::placeholder {
-	color: #f00;
+  color: #f00;
 }
 
 @keyframes shake {
-	0%,
-	100% {
-		transform: translateX(0);
-	}
-	20% {
-		transform: translateX(-6px);
-	}
-	40% {
-		transform: translateX(6px);
-	}
-	60% {
-		transform: translateX(-4px);
-	}
-	80% {
-		transform: translateX(4px);
-	}
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
 }
 
 .borderlessInput textarea {
-	font-size: 1.125rem;
-	line-height: 1.5;
+  font-size: 1.125rem;
+  line-height: 1.5;
 }

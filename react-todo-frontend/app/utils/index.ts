@@ -1,2 +1,2 @@
-export { toAkselColor } from "./color";
-export { filterTodosByTags, getUniqueTags, getUnusedTags } from "./todo";
+export { toAkselColor } from './color'
+export { filterTodosByTags, getUniqueTags, getUnusedTags } from './todo'

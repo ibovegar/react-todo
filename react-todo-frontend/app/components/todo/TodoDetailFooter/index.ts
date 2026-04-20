@@ -1,1 +1,1 @@
-export { TodoDetailFooter } from "./TodoDetailFooter";
+export { TodoDetailFooter } from './TodoDetailFooter'
