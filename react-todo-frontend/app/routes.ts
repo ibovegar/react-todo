@@ -6,7 +6,7 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-	route("api/todos", "routes/api.todos.tsx"),
+	route("actions/todos", "routes/actions.todos.tsx"),
 	layout("routes/tabs-layout.tsx", [
 		index("routes/open.tsx"),
 		route("finished", "routes/finished.tsx"),

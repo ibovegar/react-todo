@@ -9,7 +9,11 @@ import {
 } from "@navikt/ds-react";
 import { Form, useLoaderData } from "react-router";
 
-import { createTag, deleteTag, getTags } from "~/api";
+import {
+	createTag as createTagApi,
+	deleteTag as deleteTagApi,
+	getTags,
+} from "~/api";
 import type { TagColor, TodoTag } from "~/models";
 import { toAkselColor } from "~/utils";
 
@@ -26,13 +30,13 @@ export async function action({ request }: { request: Request }) {
 		const name = formData.get("name") as string;
 		const color = formData.get("color") as TagColor;
 		if (name?.trim()) {
-			await createTag({ name: name.trim().toLowerCase(), color });
+			await createTagApi({ name: name.trim().toLowerCase(), color });
 		}
 	}
 
 	if (intent === "delete") {
 		const id = formData.get("id") as string;
-		await deleteTag(id);
+		await deleteTagApi(id);
 	}
 
 	return { ok: true };

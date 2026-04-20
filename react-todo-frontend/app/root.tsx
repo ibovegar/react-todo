@@ -47,6 +47,7 @@ const App = () => {
 
 export default App;
 
+// TODO: Use Aksel
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	let message = "Oops!";
 	let details = "An unexpected error occurred.";

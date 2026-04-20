@@ -3,7 +3,7 @@ import type { Todo, TodoTag } from "~/models";
 import { tags, todos } from "./data";
 
 export const handlers = [
-	http.get("http://localhost:3001/api/todos", ({ request }) => {
+	http.get("*/api/todos", ({ request }) => {
 		const url = new URL(request.url);
 		const status = url.searchParams.get("status");
 
@@ -22,7 +22,7 @@ export const handlers = [
 		return HttpResponse.json(sorted);
 	}),
 
-	http.post("http://localhost:3001/api/todos", async ({ request }) => {
+	http.post("*/api/todos", async ({ request }) => {
 		const body = (await request.clone().json()) as {
 			title: string;
 			description: string;
@@ -41,33 +41,30 @@ export const handlers = [
 		return HttpResponse.json(newTodo, { status: 201 });
 	}),
 
-	http.patch(
-		"http://localhost:3001/api/todos/:id",
-		async ({ params, request }) => {
-			const id = params.id as string;
-			const body = (await request.clone().json()) as Partial<Todo>;
-			const todo = todos.find((t) => t.id === id);
-			if (!todo) {
-				return HttpResponse.json({ error: "Not found" }, { status: 404 });
-			}
-			Object.assign(todo, body);
-			if (todo.tags) {
-				const seen = new Set<string>();
-				todo.tags = todo.tags.filter((t) => {
-					if (seen.has(t.id)) return false;
-					seen.add(t.id);
-					return true;
-				});
-			}
-			return HttpResponse.json(todo);
-		},
-	),
+	http.patch("*/api/todos/:id", async ({ params, request }) => {
+		const id = params.id as string;
+		const body = (await request.clone().json()) as Partial<Todo>;
+		const todo = todos.find((t) => t.id === id);
+		if (!todo) {
+			return HttpResponse.json({ error: "Not found" }, { status: 404 });
+		}
+		Object.assign(todo, body);
+		if (todo.tags) {
+			const seen = new Set<string>();
+			todo.tags = todo.tags.filter((t) => {
+				if (seen.has(t.id)) return false;
+				seen.add(t.id);
+				return true;
+			});
+		}
+		return HttpResponse.json(todo);
+	}),
 
-	http.get("http://localhost:3001/api/tags", () => {
+	http.get("*/api/tags", () => {
 		return HttpResponse.json(tags);
 	}),
 
-	http.post("http://localhost:3001/api/tags", async ({ request }) => {
+	http.post("*/api/tags", async ({ request }) => {
 		const body = (await request.clone().json()) as Omit<TodoTag, "id">;
 		if (tags.some((t) => t.name === body.name)) {
 			return HttpResponse.json(
@@ -84,7 +81,7 @@ export const handlers = [
 		return HttpResponse.json(newTag, { status: 201 });
 	}),
 
-	http.delete("http://localhost:3001/api/todos/:id", ({ params }) => {
+	http.delete("*/api/todos/:id", ({ params }) => {
 		const id = params.id as string;
 		const index = todos.findIndex((t) => t.id === id);
 		if (index === -1) {
@@ -94,7 +91,7 @@ export const handlers = [
 		return HttpResponse.json(null, { status: 204 });
 	}),
 
-	http.delete("http://localhost:3001/api/tags/:id", ({ params }) => {
+	http.delete("*/api/tags/:id", ({ params }) => {
 		const id = params.id as string;
 		const index = tags.findIndex((t) => t.id === id);
 		if (index === -1) {

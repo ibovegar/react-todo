@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useFetcher } from "react-router";
 import type { Todo, TodoTag } from "~/models";
 
-const ACTION = "/api/todos";
+const ACTION = "/actions/todos";
 
 export function useTodoActions(todo?: Todo) {
 	const fetcher = useFetcher();
