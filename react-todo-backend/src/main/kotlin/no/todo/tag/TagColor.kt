@@ -2,7 +2,6 @@ package no.todo.tag
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-
 enum class TagColor(@get:JsonValue val value: String) {
     COLOR_1("color_1"),
     COLOR_2("color_2"),

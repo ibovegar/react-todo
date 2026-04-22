@@ -20,6 +20,13 @@ Use the `local` profile to avoid conflicts on default port `8080`.
 - `POST /api/tags`
 - `DELETE /api/tags/{id}`
 
+### Swagger / OpenAPI
+
+- Swagger UI (default profile): `http://localhost:8080/swagger-ui/index.html`
+- OpenAPI JSON (default profile): `http://localhost:8080/v3/api-docs`
+- Swagger UI (local profile): `http://localhost:8081/swagger-ui/index.html`
+- OpenAPI JSON (local profile): `http://localhost:8081/v3/api-docs`
+
 Tags use `id` as identity and allow duplicate `name` values.
 
 ### Tag color values
