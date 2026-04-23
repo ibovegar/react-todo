@@ -1,27 +1,32 @@
-export type Fetcher = <T>(url: string, options?: RequestInit) => Promise<T>
+import createClient, { type Middleware } from 'openapi-fetch'
 
-export const fetcher =
-  (baseUrl: string, _request: Request): Fetcher =>
-  async <T>(url: string, options: RequestInit = {}): Promise<T> => {
-    // TODO: Extract auth token from _request when authentication is implemented
-    // const token = getAuthToken(_request)
+import type { paths } from '~/api/generated/schema'
 
-    const res = await fetch(`${baseUrl}${url}`, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        // Authorization: `Bearer ${token}`,
-        ...options.headers,
-      },
-    })
-
-    if (!res.ok) {
-      throw new Response(res.statusText, { status: res.status })
+const throwOnError: Middleware = {
+  async onResponse({ response }) {
+    if (!response.ok) {
+      throw new Response(response.statusText, { status: response.status })
     }
+    return undefined
+  },
+}
 
-    if (res.status === 204) {
-      return undefined as T
-    }
+export function createApiClient(baseUrl: string, request: Request) {
+  const token = request.headers.get('Authorization')
 
-    return res.json() as T
+  const authMiddleware: Middleware = {
+    async onRequest({ request }) {
+      if (token) {
+        request.headers.set('Authorization', token)
+      }
+      return request
+    },
   }
+
+  const client = createClient<paths>({ baseUrl })
+  client.use(authMiddleware)
+  client.use(throwOnError)
+  return client
+}
+
+export type ApiClient = ReturnType<typeof createApiClient>

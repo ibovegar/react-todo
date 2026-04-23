@@ -1,11 +1,11 @@
-import { fetcher } from '../api-client'
 import { todoApi } from './todo-api'
 
+import { createApiClient } from '~/api'
 import type { TodoTag } from '~/models/tag'
 
 export function createTodoApi({ request }: { request: Request }) {
   const baseUrl = process.env.API_BASE_URL ?? ''
-  return todoApi(fetcher(`${baseUrl}/api`, request))
+  return todoApi(createApiClient(baseUrl, request))
 }
 
 export async function createTodoAction({ request }: { request: Request }) {

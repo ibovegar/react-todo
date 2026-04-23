@@ -56,3 +56,35 @@ pnpm start
 ```bash
 pnpm typecheck
 ```
+
+## API Type Generation
+
+TypeScript types are auto-generated from the backend's OpenAPI specification using [openapi-typescript](https://openapi-ts.dev/).
+
+### How it works
+
+1. The backend has a test (`OpenApiExportTest`) that exports its OpenAPI spec to `react-todo-backend/openapi.json`
+2. The frontend reads that file and generates fully typed interfaces into `app/api/generated/schema.d.ts`
+
+### Regenerating types
+
+After any backend API change:
+
+```bash
+# 1. In the backend project — export the latest spec
+cd ../react-todo-backend
+./mvnw test -Dtest=OpenApiExportTest
+
+# 2. In the frontend project — regenerate types
+cd ../react-todo-frontend
+pnpm run generate:api
+```
+
+### Generated files
+
+| File | Purpose |
+|------|---------|
+| `../react-todo-backend/openapi.json` | Exported OpenAPI spec (source of truth) |
+| `app/api/generated/schema.d.ts` | Auto-generated TypeScript types (do not edit) |
+
+> **Note:** The generated `schema.d.ts` should be committed to git so the frontend builds without needing the backend.

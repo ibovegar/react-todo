@@ -1,20 +1,39 @@
-import type { Fetcher } from '../api-client'
-
+import type { ApiClient } from '~/api'
 import type { TodoTag } from '~/models/tag'
 import type { Todo } from '~/models/todo'
 
-export function todoApi(fetch: Fetcher) {
+export function todoApi(client: ApiClient) {
   return {
-    getOpen: () => fetch<Todo[]>('/todos?status=open'),
-    getFinished: () => fetch<Todo[]>('/todos?status=done'),
-    create: (todo: { title: string; description: string; tags?: TodoTag[] }) =>
-      fetch<Todo>('/todos', { method: 'POST', body: JSON.stringify(todo) }),
-    update: (id: string, fields: { title?: string; description?: string }) =>
-      fetch<Todo>(`/todos/${id}`, { method: 'PATCH', body: JSON.stringify(fields) }),
-    delete: (id: string) => fetch<void>(`/todos/${id}`, { method: 'DELETE' }),
-    markDone: (id: string) => fetch<Todo>(`/todos/${id}`, { method: 'PATCH', body: JSON.stringify({ done: true }) }),
-    markOpen: (id: string) => fetch<Todo>(`/todos/${id}`, { method: 'PATCH', body: JSON.stringify({ done: false }) }),
-    addTags: (id: string, tags: TodoTag[]) =>
-      fetch<Todo>(`/todos/${id}`, { method: 'PATCH', body: JSON.stringify({ tags }) }),
+    getOpen: async () => {
+      const { data } = await client.GET('/api/todos', { params: { query: { status: 'open' } } })
+      return data as Todo[]
+    },
+    getFinished: async () => {
+      const { data } = await client.GET('/api/todos', { params: { query: { status: 'done' } } })
+      return data as Todo[]
+    },
+    create: async (todo: { title: string; description: string; tags?: TodoTag[] }) => {
+      const { data } = await client.POST('/api/todos', { body: todo })
+      return data as Todo
+    },
+    update: async (id: string, fields: { title?: string; description?: string }) => {
+      const { data } = await client.PATCH('/api/todos/{id}', { params: { path: { id } }, body: fields })
+      return data as Todo
+    },
+    delete: async (id: string) => {
+      await client.DELETE('/api/todos/{id}', { params: { path: { id } } })
+    },
+    markDone: async (id: string) => {
+      const { data } = await client.PATCH('/api/todos/{id}', { params: { path: { id } }, body: { done: true } })
+      return data as Todo
+    },
+    markOpen: async (id: string) => {
+      const { data } = await client.PATCH('/api/todos/{id}', { params: { path: { id } }, body: { done: false } })
+      return data as Todo
+    },
+    addTags: async (id: string, tags: TodoTag[]) => {
+      const { data } = await client.PATCH('/api/todos/{id}', { params: { path: { id } }, body: { tags } })
+      return data as Todo
+    },
   }
 }
